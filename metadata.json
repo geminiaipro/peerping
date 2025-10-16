@@ -1,0 +1,5 @@
+{
+  "name": "PeerPing - P2P Uptime Monitoring",
+  "description": "A landing page for a decentralized, free peer-to-peer uptime monitoring service. Users earn credits by monitoring others and spend them to have their own services monitored.",
+  "requestFramePermissions": []
+}
