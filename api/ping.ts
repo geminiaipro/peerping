@@ -6,23 +6,40 @@ export default async function handler(
   response: VercelResponse,
 ) {
   if (request.method === 'POST') {
-    const { serviceId, latency, status } = request.body;
+    // The API key from the peer is the peerId
+    const peerId = request.headers['x-api-key'];
+    const { latency, status } = request.body;
 
-    if (!serviceId || !latency || !status) {
+    if (!peerId || !latency || !status) {
       return response.status(400).json({ error: 'Missing required fields' });
     }
 
+    if (Array.isArray(peerId)) {
+        return response.status(400).json({ error: 'Invalid API key format' });
+    }
+
+    let client;
     try {
-      const client = await pool.connect();
+      client = await pool.connect();
+
+      // Verify the peer exists
+      const peerResult = await client.query('SELECT id FROM peers WHERE id = $1', [peerId]);
+      if (peerResult.rows.length === 0) {
+        return response.status(401).json({ error: 'Invalid API Key' });
+      }
+
       await client.query(
-        'INSERT INTO pings (service_id, latency, status) VALUES ($1, $2, $3)',
-        [serviceId, latency, status]
+        'INSERT INTO pings (peer_id, latency, status) VALUES ($1, $2, $3)',
+        [peerId, latency, status]
       );
-      client.release();
       return response.status(200).json({ message: 'Ping data saved' });
     } catch (error) {
       console.error(error);
       return response.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+      if (client) {
+        client.release();
+      }
     }
   } else {
     response.setHeader('Allow', ['POST']);
