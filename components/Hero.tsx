@@ -13,7 +13,7 @@ const Hero: React.FC = () => {
           Join a decentralized network where you earn credits by monitoring peers. Use those credits to get your own servers monitored from around the globe. No catch, no credit card.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#" className="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 hover:scale-105">
+          <a href="/login" className="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 hover:scale-105">
             Start Monitoring in 60 Seconds
           </a>
           <a href="#how-it-works" className="w-full sm:w-auto bg-slate-700/50 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300">
